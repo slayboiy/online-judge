@@ -1,0 +1,21 @@
+<h2>Войти</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  <p>
+    <label>Имя пользователя</label><br>
+    <input type="text" name="username">
+  </p>
+
+  <p>
+    <label>Пароль</label><br>
+    <input type="password" name="password">
+  </p>
+
+  {% if error %}
+    <p style="color:red">{{ error }}</p>
+  {% endif %}
+
+  <button type="submit">Войти</button>
+</form>

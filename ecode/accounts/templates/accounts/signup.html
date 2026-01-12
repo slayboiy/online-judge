@@ -1,0 +1,27 @@
+<h2>Регистрация</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  <p>
+    <label>Имя пользователя</label><br>
+    <input type="text" name="username">
+  </p>
+
+  <p>
+    <label>Email</label><br>
+    <input type="text" name="email">
+  </p>
+
+  <p>
+    <label>Пароль</label><br>
+    <input type="password" name="password1">
+  </p>
+
+  <p>
+    <label>Подтвердите пароль</label><br>
+    <input type="password" name="password2">
+  </p>
+
+  <button type="submit">Создать аккаунт</button>
+</form>
