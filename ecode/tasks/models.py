@@ -7,6 +7,10 @@ class Language(models.Model):
     
     def __str__(self):
         return f"{self.title}: {self.code}"
+    
+    class Meta:
+        verbose_name = "Язык программирования"
+        verbose_name_plural = "Языки программирования"
 
 class Task(models.Model): 
     title = models.CharField(max_length=255)
@@ -19,10 +23,12 @@ class Task(models.Model):
     
     languages = models.ManyToManyField(Language, through="TaskLanguage", related_name="tasks")
     
-    
-
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = "Задача"
+        verbose_name_plural = "Задачи"
 
 class TaskLanguage(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
@@ -42,6 +48,10 @@ class TaskTest(models.Model):
     
     def __str__(self):
         return f"Test #{self.task} for task {self.task_id}"
+    
+    class Meta: 
+        verbose_name = "Тест"
+        verbose_name_plural = "Тесты"
 
 # class Submission(models.Model):
 #     creadet_at = models.DateTimeField(auto_now_add=True)

@@ -1,3 +1,7 @@
-body {
-    background: #A9BAFF;
+.navbar {
+    background: #3D81F6;
+}
+
+h1 {
+    font-size: 35px;
 }
