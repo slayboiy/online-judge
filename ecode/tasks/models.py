@@ -47,7 +47,7 @@ class TaskTest(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE,related_name="tests")
     
     def __str__(self):
-        return f"Test #{self.task} for task {self.task_id}"
+        return f"Тест №{self.id} для задачи #{self.task}"
     
     class Meta: 
         verbose_name = "Тест"

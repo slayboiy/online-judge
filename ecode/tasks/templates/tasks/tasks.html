@@ -8,8 +8,14 @@
     <h1> Задачи: </h1>
     {% for task in tasks %}
         <div>
-            <a href=""> 
-            {{task.id}}. {{task}}
-        </div>
+            <p> {{task.id}}. {{task}} </p>
+            <a href="{% url 'task-show' task.id %}" class="btn btn-primary">Решать задачу</a>
+            <a href="{% url 'task-delete' task.id %}" class="btn btn-danger">Удалить задачу</a>
+            <span>{{error}}</span> 
+        </div> <br>    
     {% endfor %}
+    
+    <a href="{% url 'task-create' %}" class="btn btn-secondary">Добавить задачу</a>
+
+
 {% endblock%}

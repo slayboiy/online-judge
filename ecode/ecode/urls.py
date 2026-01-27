@@ -7,6 +7,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('accounts/', include('accounts.urls')),
-    path('', include('tasks.urls'))
+    path('tasks/', include('tasks.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

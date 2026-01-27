@@ -1,0 +1,123 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+Добавление задачи
+{% endblock %}
+
+{% block content %}
+    <h1>Добавление задачи</h1>
+    <form id="form" method="post">
+        {% csrf_token %}
+        {{task_form.as_p}}<br>
+        <span>{{error}}</span>
+
+        <div id="tests-container">
+
+            {{formset_tests.management_form}}
+            {% for form_test in formset_tests %}
+            
+                <div class="test-form">
+                    {% comment %} <p> Тест <span class="test-number"></span> </p>  {% endcomment %}
+                    <label>Входные данные</label>
+                    <p> {{form_test.input_data}} </p>
+                    <label>Выходные данные</label>
+                    <p> {{form_test.expected_output}} </p>
+
+                    <div style="display:none;">
+                        {{ form_test.DELETE }}
+                    </div>
+
+                    <p> <button type="button" class="delete-test btn btn-danger">
+                        - Тест
+                    </button> </p>
+                </div>
+
+            {% endfor %}
+            <button id="add-form" type="button" class="btn btn-secondary">
+                + Тест
+            </button> 
+        </div>
+        <br><br>
+
+        <button type="submit" class="btn btn-primary">
+            Добавить задачу
+        </button>
+    </form>
+    <br>
+    <a href="{% url 'tasks' %}" class="btn btn-secondary">назад </a>
+
+    <div id="empty-form" style="display:none;">
+        {% comment %} <p> Тест <span class="test-number"></span> </p> {% endcomment %}
+        <label>Входные данные</label>
+        <p> {{formset_tests.empty_form.input_data}} </p>
+        <label>Выходные данные</label>
+        <p> {{formset_tests.empty_form.expected_output}} </p>
+        <div style="display:none;">
+            {{formset_tests.empty_form.DELETE}}
+        </div>
+
+        <p>
+        <button type="button" class="delete-test btn btn-danger">
+            - Тест
+        </button>
+        </p> 
+      </div>
+
+    <script>
+        const container = document.querySelector("#tests-container")
+        const addButton = document.querySelector("#add-form")
+        const totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+        const emptyTestForm = document.querySelector('#empty-form')
+        
+        const delButton = document.querySelector(".delete-test")
+
+        
+
+        addButton.addEventListener('click', addTestForm)
+        {% comment %} document.addEventListener('DOMContentLoaded', renumber) {% endcomment %}
+        {% comment %} addButton.addEventListener('click', renumber) {% endcomment %}
+
+        function addTestForm(e) {
+            e.preventDefault()
+            
+            const formNum = parseInt(totalForms.value)
+            const newTestFormHtml = emptyTestForm.innerHTML.replace(/__prefix__/g, formNum)
+            const newTestForm = document.createElement('div')
+            newTestForm.classList.add('test-form')
+            newTestForm.innerHTML = newTestFormHtml
+            
+            container.insertBefore(newTestForm, addButton)
+            totalForms.value = formNum + 1 
+        }
+        {% comment %} 
+        function renumber() {
+            const tests = document.querySelectorAll("#tests-container .test-form")
+
+            tests.forEach((test, index) => {
+                const numberSpan = test.querySelector('.test-number')
+                if (numberSpan) {
+                    numberSpan.textContent = index + 1
+                }
+            })
+        } {% endcomment %}
+
+        container.addEventListener('click', function (e) {
+            const btn = e.target.closest('.delete-test')
+            if (!btn) return
+        
+            const block = btn.closest('.test-form')
+            if (!block) return
+        
+            const deleteCheckbox = block.querySelector('input[name$="-DELETE"]')
+            if (deleteCheckbox) deleteCheckbox.checked = true
+        
+            block.style.display = 'none'
+            {% comment %} renumber() {% endcomment %}
+        })
+        
+
+    
+
+    </script>
+
+{% endblock %}

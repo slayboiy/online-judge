@@ -1,15 +1,17 @@
 {% extends "main/layout.html" %}
 
 {% block title %}
-Задача
+{{task.title}}
 {% endblock %}
 
 {% block content %}
-    <h1> Задачи: </h1>
-    {% for task in tasks %}
-        <div>
-            <a href=""> 
-            {{task.id}}. {{task}}
-        </div>
-    {% endfor %}
-{% endblock%}
+    <h1> {{task.title}} </h1>
+    <p>{{task.description}}</p>
+    <p>Здесь будет встроенный редактор </p>
+    <a href="{% url 'tasks' %}" class="btn btn-secondary">назад </a> 
+    
+    
+
+
+
+{% endblock %}
