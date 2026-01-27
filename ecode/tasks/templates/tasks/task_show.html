@@ -7,7 +7,26 @@
 {% block content %}
     <h1> {{task.title}} </h1>
     <p>{{task.description}}</p>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">N</th>
+            <th scope="col">Входные данные</th>
+            <th scope="col">Выходные данные</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for test in tests %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{test.input_data}}</td>
+                    <td>{{test.expected_output}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
     <p>Здесь будет встроенный редактор </p>
+
     <a href="{% url 'tasks' %}" class="btn btn-secondary">назад </a> 
     
     

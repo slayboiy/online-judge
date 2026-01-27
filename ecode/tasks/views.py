@@ -1,21 +1,24 @@
 from django.shortcuts import render, redirect
-from .models import Task
+from .models import Task, TaskTest
 from django.views.generic import DetailView, UpdateView
 from .forms import TaskForm, TestForm, forms_tests
-
-
-
-
 
 
 def tasks_view(request):
     tasks = Task.objects.all()
     return render(request, "tasks/tasks.html", {"tasks": tasks})
 
-class task_detailview(DetailView):
-    model = Task
-    template_name = "tasks/task_show.html"
-    context_object_name = 'task'
+
+def task_show(request, pk):
+    task = Task.objects.get(id=pk)
+    tests = TaskTest.objects.filter(task_id=pk)
+    context = {
+        "task": task,
+        "tests": tests
+    }
+    return render(request, "tasks/task_show.html", context)
+    
+
 
 class task_update_view(UpdateView):
     model = Task
