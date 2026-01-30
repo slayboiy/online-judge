@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task, TaskTest
 from django.views.generic import DetailView, UpdateView
 from .forms import TaskForm, TestForm, forms_tests
-
+from django.db import transaction
 
 def tasks_view(request):
     tasks = Task.objects.all()
@@ -20,39 +20,57 @@ def task_show(request, pk):
     
 
 
-class task_update_view(UpdateView):
-    model = Task
-    template_name = "tasks/task_show.html"
+def task_update(request, pk):
+    error = ""
+    task = get_object_or_404(Task, id=pk)
+    
+    if request.method == "POST":
+        task_form = TaskForm(request.POST, instance=task)
+        tests_form = forms_tests(request.POST, instance=task)
+        if task_form.is_valid() and tests_form.is_valid():
+            with transaction.atomic():
+                task_form.save()
+                tests_form.save()
+            return redirect("task-show", pk=pk)
+        error = 'Форма была неверна'   
+    else:
+        task_form = TaskForm(instance=task)
+        tests_form = forms_tests(instance=task)
+           
+    context = {
+        "task_form": task_form,
+        "tests_form": tests_form,
+        'error': error
+    }
+    
+    return render(request,"tasks/task_update.html", context)
     
 
 
 def task_create_view(request):
-    
     error = ''
     
     if request.method == "POST":
         task_form = TaskForm(request.POST)
-        tests = forms_tests(request.POST)
-        
-        if task_form.is_valid() and tests.is_valid():
-            task = task_form.save(commit=False)  
-            task.created_by = request.user
-            task.save()
-            
-            for test in tests:  
-                test = test.save(commit=False)
-                test.task_id = task.id
-                test.save()
+        tests_form = forms_tests(request.POST)     
+        if task_form.is_valid() and tests_form.is_valid():
+            with transaction.atomic():   
+                task = task_form.save(commit=False)  
+                task.created_by = request.user
+                task.save()
+                
+                tests_form.instance = task
+                tests_form.save()
             return redirect('tasks')
         
         error = 'Форма была неверна'
-      
-    task_form = TaskForm()
-    tests_form = forms_tests()
+    else:
+        task_form = TaskForm()
+        tests_form = forms_tests()
     
     context = {
         'task_form': task_form,
-        'formset_tests': tests_form,
+        'tests_form': tests_form,
         'error': error
     }
     

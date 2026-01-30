@@ -1,6 +1,6 @@
 from .models import Task, TaskTest
 from django.forms import ModelForm, TextInput, Textarea, NumberInput
-from django.forms import formset_factory
+from django.forms import inlineformset_factory
 
 class TaskForm(ModelForm):
     class Meta:
@@ -45,7 +45,13 @@ class TestForm(ModelForm):
             'expected_output': 'Выходные данные'
         }
         
-forms_tests = formset_factory(TestForm, can_delete=True)
+forms_tests = inlineformset_factory(
+    Task, 
+    TaskTest,
+    form=TestForm, 
+    extra=1, 
+    can_delete=True
+)
              
         
             
