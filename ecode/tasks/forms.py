@@ -45,11 +45,12 @@ class TestForm(ModelForm):
             'expected_output': 'Выходные данные'
         }
         
+        
 forms_tests = inlineformset_factory(
     Task, 
     TaskTest,
     form=TestForm, 
-    extra=1, 
+    extra=0, 
     can_delete=True
 )
              

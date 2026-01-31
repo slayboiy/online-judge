@@ -1,21 +1,28 @@
-<h2>Войти</h2>
+{% extends "main/layout.html" %}
+{% block title %}
+  Авторизация
+{% endblock %}  
 
-<form method="post">
-  {% csrf_token %}
+{% block content %}
+  <form method="post">
+    <h2>Войти</h2>
+    {% csrf_token %}
 
-  <p>
-    <label>Имя пользователя</label><br>
-    <input type="text" name="username">
-  </p>
+    <p>
+      <label>Имя пользователя</label><br>
+      <input type="text" name="username">
+    </p>
 
-  <p>
-    <label>Пароль</label><br>
-    <input type="password" name="password">
-  </p>
+    <p>
+      <label>Пароль</label><br>
+      <input type="password" name="password">
+    </p>
 
-  {% if error %}
-    <p style="color:red">{{ error }}</p>
-  {% endif %}
+    {% if error %}
+      <p style="color:red">{{ error }}</p>
+    {% endif %}
 
-  <button type="submit">Войти</button>
-</form>
+    <button type="submit">Войти</button>
+  </form>
+
+{% endblock content %}

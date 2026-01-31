@@ -1,71 +1,69 @@
-{% extends "main/layout.html" %}
+{% extends 'main/layout.html' %}
 
 {% block title %}
-Добавление задачи
+  Добавление задачи
 {% endblock %}
 
 {% block content %}
-    <h1>Добавление задачи</h1>
-    <form id="form" method="post">
-        {% csrf_token %}
-        {{task_form.as_p}}<br>
-        <span>{{error}}</span>
+  <h1>Добавление задачи</h1>
+  <form id="form" method="post">
+    {% csrf_token %}
+    {{ task_form.as_p }}<br />
+    <span class="text-danger">{{ error }}</span>
 
-        <div id="tests-container">
+    <div id="tests-container">
+      {{ tests_form.management_form }}
+      {% for form_test in tests_form %}
+        <div class="test-form">
+          {% comment %} <p>
+            Тест <span class="test-number"></span>
+          </p> {% endcomment %}
+          {{ form_test.id }}
+          <p>Тест</p>
+          <label>Входные данные</label>
+          <p>{{ form_test.input_data }}</p>
+          <label>Выходные данные</label>
+          <p>{{ form_test.expected_output }}</p>
 
-            {{tests_form.management_form}}
-            {% for form_test in tests_form %}
-            
-                <div class="test-form">
-                    {% comment %} <p> Тест <span class="test-number"></span> </p>  {% endcomment %}
-                    <p>Тест</p>
-                    <label>Входные данные</label>
-                    <p> {{form_test.input_data}} </p>
-                    <label>Выходные данные</label>
-                    <p> {{form_test.expected_output}} </p>
+          <div style="display:none;">{{ form_test.DELETE }}</div>
 
-                    <div style="display:none;">
-                        {{ form_test.DELETE }}
-                    </div>
-
-                    <p> <button type="button" class="delete-test btn btn-danger">
-                        - Тест
-                    </button> </p>
-                </div>
-
-            {% endfor %}
-            <button id="add-form" type="button" class="btn btn-secondary">
-                + Тест
-            </button> 
+          <p>
+            <button type="button" class="delete-test btn btn-danger">- Тест</button>
+          </p>
         </div>
-        <br><br>
+      {% endfor %}
+      <button id="add-form" type="button" class="btn btn-secondary">+ Тест</button>
+    </div>
+    <br /><br />
+    {{ task_form.errors }}
+    {{ tests_form.non_form_errors }}
+    {% for f in tests_form %}
+      {{ f.errors }}
+    {% endfor %}
 
-        <button type="submit" class="btn btn-primary">
-            Сохранить задачу
-        </button>
-    </form>
-    <br>
-    <a href="{% url 'tasks' %}" class="btn btn-secondary">назад </a>
+    <button type="submit" class="btn btn-primary">Сохранить задачу</button>
+  </form>
+  <br />
+  <a href="{% url 'tasks' %}" class="btn btn-secondary">назад</a>
 
-    <div id="empty-form" style="display:none;">
-        {% comment %} <p> Тест <span class="test-number"></span> </p> {% endcomment %}
-        <p>Тест</p>
-        <label>Входные данные</label>
-        <p> {{tests_form.empty_form.input_data}} </p>
-        <label>Выходные данные</label>
-        <p> {{tests_form.empty_form.expected_output}} </p>
-        <div style="display:none;">
-            {{tests_form.empty_form.DELETE}}
-        </div>
+  <div id="empty-form" style="display:none;">
+    {% comment %} <p>
+      Тест <span class="test-number"></span>
+    </p> {% endcomment %}
+    <p>Тест</p>
+    {{ form_test.id }}
+    <label>Входные данные</label>
+    <p>{{ tests_form.empty_form.input_data }}</p>
+    <label>Выходные данные</label>
+    <p>{{ tests_form.empty_form.expected_output }}</p>
+    <div style="display:none;">{{ tests_form.empty_form.DELETE }}</div>
 
-        <p>
-        <button type="button" class="delete-test btn btn-danger">
-            - Тест
-        </button>
-        </p> 
-      </div>
+    <p>
+      <button type="button" class="delete-test btn btn-danger">- Тест</button>
+    </p>
+  </div>
 
-    <script>
+  <script>
         const container = document.querySelector("#tests-container")
         const addButton = document.querySelector("#add-form")
         const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]')
@@ -121,5 +119,4 @@
     
 
     </script>
-
 {% endblock %}

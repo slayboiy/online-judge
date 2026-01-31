@@ -9,7 +9,7 @@
     <form id="form" method="post">
         {% csrf_token %}
         {{task_form.as_p}}<br>
-        <span>{{error}}</span>
+        <span class="text-danger">{{error}}</span>
 
         <div id="tests-container">
 
