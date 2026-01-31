@@ -3,6 +3,8 @@ from .models import Task, TaskTest
 from django.views.generic import DetailView, UpdateView
 from .forms import TaskForm, TestForm, forms_tests
 from django.db import transaction
+from accounts.decorators import role_required
+from django.contrib.auth.decorators import permission_required
 
 def tasks_view(request):
     tasks = Task.objects.all()
@@ -19,7 +21,7 @@ def task_show(request, pk):
     return render(request, "tasks/task_show.html", context)
     
 
-
+@permission_required('tasks.update_task', raise_exception=True)
 def task_update(request, pk):
     error = ""
     task = get_object_or_404(Task, id=pk)
@@ -46,7 +48,7 @@ def task_update(request, pk):
     return render(request,"tasks/task_update.html", context)
     
 
-
+@permission_required('tasks.create_task', raise_exception=True)
 def task_create_view(request):
     error = ''
     
@@ -76,6 +78,7 @@ def task_create_view(request):
     
     return render(request, 'tasks/task_create.html', context)
 
+@permission_required('tasks.delete_task', raise_exception=True)
 def task_delete_view(request, pk):
     error = ''
     

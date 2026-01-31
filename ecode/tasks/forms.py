@@ -2,6 +2,7 @@ from .models import Task, TaskTest
 from django.forms import ModelForm, TextInput, Textarea, NumberInput
 from django.forms import inlineformset_factory
 
+
 class TaskForm(ModelForm):
     class Meta:
         model = Task

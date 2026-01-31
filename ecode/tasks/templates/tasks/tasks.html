@@ -10,12 +10,15 @@
         <div>
             <p> {{task}} </p>
             <a href="{% url 'task-show' task.id %}" class="btn btn-primary">Решать задачу</a>
-            <a href="{% url 'task-delete' task.id %}" class="btn btn-danger">Удалить задачу</a>
+            {% if perms.tasks.delete_task %}
+                <a href="{% url 'task-delete' task.id %}" class="btn btn-danger">Удалить задачу</a>
+            {% endif %}
             <span>{{error}}</span> 
         </div> <br>    
     {% endfor %}
-    
-    <a href="{% url 'task-create' %}" class="btn btn-secondary">Добавить задачу</a>
+    {% if perms.tasks.create_task %}
+        <a href="{% url 'task-create' %}" class="btn btn-secondary">Добавить задачу</a>
+    {% endif %}
 
 
 {% endblock%}
