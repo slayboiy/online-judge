@@ -30,8 +30,18 @@
           <a class="nav-link {% if request.resolver_match.url_name == 'tasks' %}active{% endif %}" href="{% url 'tasks' %}">Задачи</a>
         </li>
       </ul>
+      <div class="ms-auto d-flex align-items-center user-info">
+        {% if user.is_authenticated %}
+          <span class="text-white username">{{ user.username }}</span> &nbsp;
+          <span class="text-white role">{{ user.profile.get_role_display }}</span>
+        {% else %}
+          <span class="text-white">Вы не вошли</span>
+        {% endif %}
+      </div>
     </div>
   </div>
+  
+
 </nav>
   <div class="content mb-3">
 

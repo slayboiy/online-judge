@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     ROLE_CHOICE = [
-        ('student', 'Студент'),
+        ('student', 'Cтудент'),
         ('teacher', 'Преподаватель'),
         ('admin', 'Администратор')
         
