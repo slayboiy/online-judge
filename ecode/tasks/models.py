@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 class Language(models.Model):
     code = models.CharField()
@@ -53,22 +54,54 @@ class TaskTest(models.Model):
         verbose_name = "Тест"
         verbose_name_plural = "Тесты"
 
+class Submission(models.Model):
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    status_choices = [
+        ('RUNNING', 'Проверка...'),
+        ('AC', 'Все ок'),
+        ('FAILED', 'Не прошел тесты'),
+        ('CE', 'Ошибка компиляции'),
+        ('RE', 'Упал во время теста'),
+        ('TLE', 'Программа работает слишком долго'),
+        ('MLE', 'Программа съела слишком много памяти'),
+        ('SYSTEM_ERROR', 'Ошибка в системе')
+    ]
+    status = models.CharField(choices=status_choices, default='RUNNING')
+    compiler_output = models.TextField(null=True, blank=True)
+    source_code = models.TextField()
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, 
+                             on_delete=models.CASCADE,
+                             related_name='submissions')
+    task = models.ForeignKey(Task, 
+                             on_delete= models.CASCADE,
+                             related_name='submissions')
+    language = models.ForeignKey(Language, 
+                                 on_delete=models.CASCADE,
+                                 related_name='submissions')
+    
+    
+    
+    
+    
+    
+    
 # class Submission(models.Model):
-#     creadet_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+#     submitted_at = models.DateTimeField(auto_now_add=True)
+    
     
 #     STATUS_CHOICES = [
-#         ("DRAFT", "Черновик")
+#         # ("DRAFT", "Черновик")
 #         ("RUNNING", "Проверка..."),
 #         ("AC", "Все ок"),
-#         ("TLE", "Превысил время"),
-#         ("RE", "Упал во время компиляции"),
-#         ("CE", 'Не скомпилировалось'),
-#         ("SYSTEM_ERROR", "ошибка в системе")
-        
+#         # ("TLE", "Превысил время"),
+#         # ("RE", "Упал во время компиляции"),
+#         # ("CE", 'Не скомпилировалось'),
+#         # ("SYSTEM_ERROR", "Ошибка в системе")
+#         ("ERROR_TESTS", "Не прошел тесты")
 #     ]
-#     status = models.CharField(choices=STATUS_CHOICES, default="DRAFT")
-#     compiler_output = models.TextField()
+#     status = models.CharField(choices=STATUS_CHOICES, default="RUNNING")
+#     compiler_output = models.TextField(null=True, blank=True)
 #     source_code = models.TextField()
     
     
