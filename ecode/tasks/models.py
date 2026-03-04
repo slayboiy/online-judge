@@ -7,7 +7,7 @@ class Language(models.Model):
     title = models.CharField(max_length=255)
     
     def __str__(self):
-        return f"{self.title}: {self.code}"
+        return f"{self.title}"
     
     class Meta:
         verbose_name = "Язык программирования"
@@ -78,7 +78,8 @@ class Submission(models.Model):
                              related_name='submissions')
     language = models.ForeignKey(Language, 
                                  on_delete=models.CASCADE,
-                                 related_name='submissions')
+                                 related_name='submissions',
+                                 default=1)
     class Meta:
         verbose_name = 'Отправленное решение'
         verbose_name_plural = 'Отправленные решения'

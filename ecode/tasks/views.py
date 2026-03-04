@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task, TaskTest, Language
 from django.views.generic import DetailView, UpdateView
-from .forms import TaskForm, TestForm, forms_tests
+from .forms import TaskForm, TestForm, forms_tests, SubmissionForm
 from django.db import transaction
 from accounts.decorators import role_required
 from django.contrib.auth.decorators import permission_required
@@ -10,18 +10,29 @@ def tasks_view(request):
     tasks = Task.objects.all()
     return render(request, "tasks/tasks.html", {"tasks": tasks})
 
-
 def task_show(request, pk):
-    # if request.method == "POST":
-        
-        
-    task = Task.objects.get(id=pk)
+    error = ''
+    task = get_object_or_404(Task, id=pk)
     tests = TaskTest.objects.filter(task_id=pk)
-    languages = Language.objects.all()
+    
+    if request.method == "POST":
+        submission_form = SubmissionForm(request.POST)
+        if submission_form.is_valid():
+            submission = submission_form.save(commit=False)  
+            submission.user = request.user
+            submission.task = task
+            submission.save()
+            return redirect("task-show", pk=pk)
+        else:
+            error = "форма не валидна"
+    else:
+        submission_form = SubmissionForm()
+    
     context = {
         "task": task,
         "tests": tests,
-        "languages": languages
+        "submission_form": submission_form,
+        'error': error
     }
     return render(request, "tasks/task_show.html", context)
     

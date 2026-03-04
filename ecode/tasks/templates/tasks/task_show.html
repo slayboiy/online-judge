@@ -34,17 +34,18 @@
 
     <form method='post' class='my-flex-form'>
       {% csrf_token %}
-      <label>
-        Язык программирования:
-        <select name="language">
-          {% for language in languages %}
+      {% comment %} <label> {% endcomment %}
+        {% comment %} <select name="language">
+          {% for language_form in languages_form %}
             <option value={{language.id}}>{{language.title}}</option>
           {% endfor %}
-        </select>
-      </label>
-      <textarea id='code' name='source_code'></textarea>
+        </select> {% endcomment %}
+        {{submission_form}}
+      {% comment %} </label> {% endcomment %}
+      {% comment %} <textarea id='code' name='source_code'></textarea> {% endcomment %}
       <button class='btn btn-success' type='submit'>Отправить</button>
     </form>
+    <span class="text-danger">{{error}}</span>
 
     <a href="{% url 'tasks' %}" class="btn btn-secondary">назад </a><br>
     {% if perms.tasks.update_task%}
@@ -62,6 +63,9 @@
       indentUnit: 4,
       tabSize: 4
     }
+    editor.on('change', function() {
+      editor.save();
+    })
     )
     editor.setSize("700px", "450px")
   </script>

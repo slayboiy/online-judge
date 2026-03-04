@@ -1,6 +1,7 @@
-from .models import Task, TaskTest, Submission
+from .models import Task, TaskTest, Submission, Language
 from django.forms import ModelForm, TextInput, Textarea, NumberInput
 from django.forms import inlineformset_factory
+from django import forms
 
 
 class TaskForm(ModelForm):
@@ -58,13 +59,30 @@ forms_tests = inlineformset_factory(
 class SubmissionForm(ModelForm):
     class Meta:
         model = Submission
-        fields = ['source_code']
+        fields = ['language', 'source_code']
         
         widgets = {
             'source_code': Textarea(attrs={
                 'class': 'form-control',
+                'id': 'code',
             })
         }
+        
+        labels = {
+            'language': 'Язык Программирования',
+            'source_code': ''
+        }
+
+# class LanguageForm(ModelForm):
+#     language_select = forms.ModelChoiceField(
+#         queryset=Language.objects.all(),
+#         initial=1,
+#         label='Язык программирования: '
+#     )
+#     class Meta:
+#         model = Language
+#         fields = []
+
              
         
             
