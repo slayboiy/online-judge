@@ -79,6 +79,11 @@ class Submission(models.Model):
     language = models.ForeignKey(Language, 
                                  on_delete=models.CASCADE,
                                  related_name='submissions')
+    class Meta:
+        verbose_name = 'Отправленное решение'
+        verbose_name_plural = 'Отправленные решения'
+    
+        
     
     
     

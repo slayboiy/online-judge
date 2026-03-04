@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task, TaskTest
+from .models import Task, TaskTest, Language
 from django.views.generic import DetailView, UpdateView
 from .forms import TaskForm, TestForm, forms_tests
 from django.db import transaction
@@ -12,11 +12,16 @@ def tasks_view(request):
 
 
 def task_show(request, pk):
+    # if request.method == "POST":
+        
+        
     task = Task.objects.get(id=pk)
     tests = TaskTest.objects.filter(task_id=pk)
+    languages = Language.objects.all()
     context = {
         "task": task,
-        "tests": tests
+        "tests": tests,
+        "languages": languages
     }
     return render(request, "tasks/task_show.html", context)
     
@@ -90,6 +95,11 @@ def task_delete_view(request, pk):
     except Task.DoesNotExist:
         error = "Задача не найдена"
         return redirect('tasks', {'error': error})
+
+def CreateSubmission():
+    pass
+
+    
         
 
 

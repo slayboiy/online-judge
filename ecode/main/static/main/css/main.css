@@ -11,11 +11,25 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 16px;
     
 }
 
 textarea {
     height: 100px;
+}
+
+.CodeMirror{
+    border: 1px solid #000000;
+}
+
+.my-flex-form{
+    display:flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+    
+
 }
 
 

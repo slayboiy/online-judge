@@ -1,4 +1,4 @@
-from .models import Task, TaskTest
+from .models import Task, TaskTest, Submission
 from django.forms import ModelForm, TextInput, Textarea, NumberInput
 from django.forms import inlineformset_factory
 
@@ -54,6 +54,17 @@ forms_tests = inlineformset_factory(
     extra=0, 
     can_delete=True
 )
+
+class SubmissionForm(ModelForm):
+    class Meta:
+        model = Submission
+        fields = ['source_code']
+        
+        widgets = {
+            'source_code': Textarea(attrs={
+                'class': 'form-control',
+            })
+        }
              
         
             

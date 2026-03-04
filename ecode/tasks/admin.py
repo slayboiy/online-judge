@@ -4,5 +4,6 @@ from . import models
 admin.site.register(models.Task)
 admin.site.register(models.Language)
 admin.site.register(models.TaskTest)
+admin.site.register(models.Submission)
 
 
